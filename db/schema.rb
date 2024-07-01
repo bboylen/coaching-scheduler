@@ -14,6 +14,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_022912) do
   create_table "bookings", force: :cascade do |t|
     t.integer "slot_id", null: false
     t.integer "student_id", null: false
+    t.boolean "completed", default: false, null: false
     t.integer "satisfaction_rating"
     t.text "notes"
     t.datetime "created_at", null: false
@@ -34,6 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_022912) do
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "type", null: false
+    t.string "phone_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

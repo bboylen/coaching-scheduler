@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { Box, Container } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import CoachDashboard from './components/CoachDashboard';
+import StudentDashboard from './components/StudentDashboard';
+import { User } from './types';
+import Header from './components/Header';
 
-function App() {
-  const [count, setCount] = useState(0)
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
+const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const userType = user?.type;
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Box display="flex" flexDirection="column" minHeight="100vh" sx={{ backgroundColor: '#f0f0f0' }}>
+          <Header user={user} setUser={setUser} />
+          <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, flex: 1 }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  user ? (userType === 'Coach' ? <CoachDashboard user={user} /> : <StudentDashboard user={user} />) : ''
+                }
+              />
+            </Routes>
+          </Container>
+        </Box>
+    </Router>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
